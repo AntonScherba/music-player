@@ -90,6 +90,19 @@ nextSong = () => {
 // On Load - select First Song
 loadSong(songs[songIndex]);
 
+// Calculate display for duration/currentTime
+calculateTime = (time, element) => {
+    const minutes = Math.floor(time / 60);
+    let seconds = Math.floor(time % 60);
+    if (seconds < 10) {
+        seconds = `0${seconds}`;
+    }
+    // Delay switching Element to avoid Nan
+    if (seconds) {
+        element.textContent = `${minutes}:${seconds}`;
+    }
+}
+
 // Update Progress Bar and Time
 updateProgressBar = (e) => {
     if (isPlaying) {
@@ -98,24 +111,10 @@ updateProgressBar = (e) => {
         const progressPercent = (currentTime / duration) * 100;
         progress.style.width = `${progressPercent}%`;
         // Calculate display for duration
-        const durationMinutes = Math.floor(duration / 60);
-        let durationSeconds = Math.floor(duration % 60);
-        if (durationSeconds < 10) {
-            durationSeconds = `0${durationSeconds}`;
-        }
-        // Delay switching duration Element to avoid Nan
-        if (durationSeconds) {
-            durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
-        }
+        calculateTime(duration, durationEl);        
 
         // Calculate display for current
-        const currentMinutes = Math.floor(currentTime / 60);
-        let currentSeconds = Math.floor(currentTime % 60);
-        if (currentSeconds < 10) {
-            currentSeconds = `0${currentSeconds}`;
-        }
-        // // Delay switching current Element to avoid Nan
-        currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+        calculateTime(currentTime, currentTimeEl);
     }
 }
 
